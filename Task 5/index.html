@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Professional Attendance Management Dashboard for managing students and attendance.">
+
+    <title>Attendify | Attendance Management</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-user-check"></i>
+            </div>
+
+            <div>
+                <h2>Attendify</h2>
+                <span>Management System</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <button class="nav-item active" data-section="dashboard">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </button>
+
+            <button class="nav-item" data-section="attendance">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Attendance</span>
+            </button>
+
+            <button class="nav-item" data-section="students">
+                <i class="fa-solid fa-users"></i>
+                <span>Students</span>
+            </button>
+
+            <button class="nav-item" data-section="reports">
+                <i class="fa-solid fa-file-lines"></i>
+                <span>Reports</span>
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <button class="nav-item" id="themeToggle">
+                <i class="fa-solid fa-moon"></i>
+                <span>Dark Mode</span>
+            </button>
+
+            <div class="admin-card">
+                <div class="avatar">AD</div>
+
+                <div>
+                    <strong>Administrator</strong>
+                    <small>Attendance Admin</small>
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <button class="menu-btn" id="menuBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div>
+                <h1 id="pageTitle">Dashboard</h1>
+                <p id="pageSubtitle">Overview of student attendance</p>
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="date-display">
+                    <i class="fa-regular fa-calendar"></i>
+                    <span id="currentDate"></span>
+                </div>
+
+                <div class="notification">
+                    <i class="fa-regular fa-bell"></i>
+                    <span id="notificationCount">0</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD -->
+        <section class="section active" id="dashboard">
+
+            <div class="welcome">
+
+                <div>
+                    <span class="eyebrow">ACADEMIC OVERVIEW</span>
+                    <h2>Good day, Administrator 👋</h2>
+                    <p>Here's what's happening with attendance today.</p>
+                </div>
+
+                <button class="primary-btn" onclick="showSection('attendance')">
+                    <i class="fa-solid fa-plus"></i>
+                    Mark Attendance
+                </button>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon students-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+
+                    <div>
+                        <span>Total Students</span>
+                        <h3 id="totalStudents">0</h3>
+                        <small>Registered students</small>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon present-icon">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+
+                    <div>
+                        <span>Present Today</span>
+                        <h3 id="presentToday">0</h3>
+                        <small id="presentRate">0% attendance</small>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon absent-icon">
+                        <i class="fa-solid fa-user-xmark"></i>
+                    </div>
+
+                    <div>
+                        <span>Absent Today</span>
+                        <h3 id="absentToday">0</h3>
+                        <small>Today's absence</small>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon warning-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+
+                    <div>
+                        <span>Below 75%</span>
+                        <h3 id="lowAttendance">0</h3>
+                        <small>Needs attention</small>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- CHART AREA -->
+            <div class="dashboard-grid">
+
+                <div class="panel large-panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <h3>Attendance Overview</h3>
+                            <p>Attendance trend for the last 7 days</p>
+                        </div>
+
+                        <span class="chart-badge">
+                            Last 7 Days
+                        </span>
+                    </div>
+
+                    <div class="chart-container">
+                        <canvas id="attendanceLineChart"></canvas>
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <h3>Today's Attendance</h3>
+                            <p>Present vs absent</p>
+                        </div>
+                    </div>
+
+                    <div class="doughnut-container">
+                        <canvas id="attendanceDoughnut"></canvas>
+                    </div>
+
+                    <div class="chart-legend">
+
+                        <div>
+                            <span class="legend-dot present-dot"></span>
+                            Present
+                            <strong id="legendPresent">0</strong>
+                        </div>
+
+                        <div>
+                            <span class="legend-dot absent-dot"></span>
+                            Absent
+                            <strong id="legendAbsent">0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOW ATTENDANCE -->
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Attendance Alerts</h3>
+                        <p>Students requiring attention</p>
+                    </div>
+
+                    <button class="text-btn" onclick="showSection('students')">
+                        View All
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </div>
+
+                <div id="alertList" class="alert-list"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ATTENDANCE -->
+        <section class="section" id="attendance">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">DAILY MANAGEMENT</span>
+                    <h2>Mark Attendance</h2>
+                    <p>Record attendance for your students.</p>
+                </div>
+
+                <button class="secondary-btn" id="exportAttendance">
+                    <i class="fa-solid fa-download"></i>
+                    Export CSV
+                </button>
+
+            </div>
+
+
+            <div class="attendance-controls">
+
+                <div class="control">
+
+                    <label>Date</label>
+
+                    <input type="date" id="attendanceDate">
+
+                </div>
+
+
+                <div class="control">
+
+                    <label>Subject</label>
+
+                    <select id="subjectSelect">
+
+                        <option value="Web Development">
+                            Web Development
+                        </option>
+
+                        <option value="Java Programming">
+                            Java Programming
+                        </option>
+
+                        <option value="Database Management">
+                            Database Management
+                        </option>
+
+                        <option value="Data Structures">
+                            Data Structures
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="control search-control">
+
+                    <label>Search Student</label>
+
+                    <div class="search-box">
+
+                        <i class="fa-solid fa-search"></i>
+
+                        <input
+                            type="text"
+                            id="attendanceSearch"
+                            placeholder="Search by name or ID..."
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="attendance-actions">
+
+                <div>
+                    <strong id="attendanceCount">
+                        0 Students
+                    </strong>
+
+                    <span id="attendanceStatus">
+                        Not marked
+                    </span>
+                </div>
+
+                <div class="action-buttons">
+
+                    <button class="success-btn" id="markAllPresent">
+                        <i class="fa-solid fa-check"></i>
+                        Mark All Present
+                    </button>
+
+                    <button class="danger-btn" id="markAllAbsent">
+                        <i class="fa-solid fa-xmark"></i>
+                        Mark All Absent
+                    </button>
+
+                    <button class="primary-btn" id="saveAttendance">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        Save Attendance
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel attendance-panel">
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Student</th>
+                            <th>Student ID</th>
+                            <th>Course</th>
+                            <th>Attendance</th>
+                            <th>Status</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody id="attendanceTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- STUDENTS -->
+        <section class="section" id="students">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">STUDENT MANAGEMENT</span>
+                    <h2>Students</h2>
+                    <p>Manage student records and attendance.</p>
+                </div>
+
+                <button class="primary-btn" id="addStudentBtn">
+                    <i class="fa-solid fa-user-plus"></i>
+                    Add Student
+                </button>
+
+            </div>
+
+
+            <div class="student-toolbar">
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-search"></i>
+
+                    <input
+                        type="text"
+                        id="studentSearch"
+                        placeholder="Search students..."
+                    >
+
+                </div>
+
+                <select id="courseFilter">
+
+                    <option value="all">
+                        All Courses
+                    </option>
+
+                    <option value="B.Tech CSE">
+                        B.Tech CSE
+                    </option>
+
+                    <option value="BCA">
+                        BCA
+                    </option>
+
+                    <option value="MCA">
+                        MCA
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                        <tr>
+
+                            <th>Student</th>
+                            <th>ID</th>
+                            <th>Course</th>
+                            <th>Semester</th>
+                            <th>Attendance</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody id="studentsTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- REPORTS -->
+        <section class="section" id="reports">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">ANALYTICS</span>
+                    <h2>Attendance Reports</h2>
+                    <p>Analyze overall student attendance.</p>
+                </div>
+
+                <button class="primary-btn" id="exportReport">
+                    <i class="fa-solid fa-file-export"></i>
+                    Export Report
+                </button>
+
+            </div>
+
+
+            <div class="report-grid">
+
+                <div class="report-card">
+                    <span>Average Attendance</span>
+                    <strong id="averageAttendance">0%</strong>
+                    <small>Across all students</small>
+                </div>
+
+                <div class="report-card">
+                    <span>Highest Attendance</span>
+                    <strong id="highestAttendance">0%</strong>
+                    <small>Top performer</small>
+                </div>
+
+                <div class="report-card">
+                    <span>Lowest Attendance</span>
+                    <strong id="lowestAttendance">0%</strong>
+                    <small>Requires attention</small>
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <h3>Student Attendance Report</h3>
+                        <p>Overall attendance percentage</p>
+                    </div>
+
+                </div>
+
+                <div id="reportList" class="report-list"></div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- STUDENT MODAL -->
+
+<div class="modal-overlay" id="studentModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+                <h3 id="modalTitle">Add Student</h3>
+                <p>Enter student information</p>
+            </div>
+
+            <button class="close-btn" id="closeModal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <form id="studentForm">
+
+            <input type="hidden" id="editStudentId">
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>Student Name</label>
+
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Student ID</label>
+
+                    <input
+                        type="text"
+                        id="studentId"
+                        placeholder="e.g. STU001"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Course</label>
+
+                    <select id="studentCourse">
+
+                        <option>B.Tech CSE</option>
+                        <option>BCA</option>
+                        <option>MCA</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Semester</label>
+
+                    <select id="studentSemester">
+
+                        <option>1st Semester</option>
+                        <option>2nd Semester</option>
+                        <option>3rd Semester</option>
+                        <option>4th Semester</option>
+                        <option>5th Semester</option>
+                        <option>6th Semester</option>
+                        <option>7th Semester</option>
+                        <option>8th Semester</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        id="studentEmail"
+                        placeholder="student@example.com"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button type="button" class="secondary-btn" id="cancelModal">
+                    Cancel
+                </button>
+
+                <button type="submit" class="primary-btn">
+                    Save Student
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div id="toast" class="toast">
+
+    <i class="fa-solid fa-circle-check"></i>
+
+    <span id="toastMessage">
+        Successfully saved.
+    </span>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
