@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Forge | Application Tracker</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                &lt;/&gt;
+            </div>
+
+            <div>
+                <strong>SKILL</strong>
+                <small>FORGE</small>
+            </div>
+
+        </div>
+
+        <nav>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#applications">Applications</a>
+            <a href="#about">About</a>
+        </nav>
+
+        <button class="add-nav-btn" id="openFormBtn">
+            <i class="fa-solid fa-plus"></i>
+            Add Application
+        </button>
+
+    </header>
+
+
+    <main>
+
+        <!-- ================= HERO ================= -->
+
+        <section class="hero" id="dashboard">
+
+            <div class="hero-content">
+
+                <span class="tag">
+                    <i class="fa-solid fa-briefcase"></i>
+                    TASK 3 • APPLICATION TRACKER
+                </span>
+
+                <h1>
+                    Track your
+                    <span>career journey.</span>
+                </h1>
+
+                <p>
+                    Keep all your job and internship applications
+                    organized in one place. Track your applications,
+                    interviews, results and progress.
+                </p>
+
+                <button class="hero-button" id="heroAddBtn">
+                    Add New Application
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+            </div>
+
+
+            <div class="hero-card">
+
+                <div class="hero-card-top">
+                    <span>Application Overview</span>
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+
+                <div class="hero-stat">
+                    <strong id="heroTotal">0</strong>
+                    <span>Total Applications</span>
+                </div>
+
+                <div class="hero-mini-stats">
+
+                    <div>
+                        <strong id="heroInterview">0</strong>
+                        <span>Interviews</span>
+                    </div>
+
+                    <div>
+                        <strong id="heroSelected">0</strong>
+                        <span>Selected</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <section class="statistics">
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+
+                <div>
+                    <span>Total Applications</span>
+                    <strong id="totalApplications">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon yellow">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+
+                <div>
+                    <span>Shortlisted</span>
+                    <strong id="shortlistedApplications">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+
+                <div>
+                    <span>Interviews</span>
+                    <strong id="interviewApplications">0</strong>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+
+                <div>
+                    <span>Selected</span>
+                    <strong id="selectedApplications">0</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= APPLICATIONS ================= -->
+
+        <section class="applications" id="applications">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>MY APPLICATIONS</span>
+
+                    <h2>
+                        Application Tracker
+                    </h2>
+
+                </div>
+
+                <p>
+                    Manage and monitor every opportunity
+                    from application to result.
+                </p>
+
+            </div>
+
+
+            <!-- SEARCH + FILTER -->
+
+            <div class="controls">
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search company or position..."
+                    >
+
+                </div>
+
+
+                <select id="statusFilter">
+
+                    <option value="All">All Statuses</option>
+
+                    <option value="Applied">Applied</option>
+
+                    <option value="Shortlisted">Shortlisted</option>
+
+                    <option value="Interview">Interview</option>
+
+                    <option value="Selected">Selected</option>
+
+                    <option value="Rejected">Rejected</option>
+
+                </select>
+
+            </div>
+
+
+            <!-- APPLICATION TABLE -->
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Company</th>
+
+                            <th>Position</th>
+
+                            <th>Applied Date</th>
+
+                            <th>Status</th>
+
+                            <th>Interview</th>
+
+                            <th>Result</th>
+
+                            <th>Actions</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="applicationTable">
+
+                    </tbody>
+
+                </table>
+
+
+                <div class="empty-table" id="emptyTable">
+
+                    <i class="fa-regular fa-folder-open"></i>
+
+                    <h3>No applications found</h3>
+
+                    <p>
+                        Add your first job or internship application.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ABOUT ================= -->
+
+        <section class="about" id="about">
+
+            <div>
+
+                <span>ABOUT THIS PROJECT</span>
+
+                <h2>
+                    Stay organized.<br>
+                    Move forward.
+                </h2>
+
+            </div>
+
+
+            <div>
+
+                <p>
+                    Skill Forge Application Tracker is an interactive
+                    web application designed to help students and
+                    job seekers organize their career opportunities.
+                </p>
+
+                <div class="features">
+
+                    <div>
+                        <i class="fa-solid fa-check"></i>
+                        Search & Filter
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-check"></i>
+                        Edit & Delete
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-check"></i>
+                        Local Storage
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= MODAL ================= -->
+
+    <div class="modal-overlay" id="modalOverlay">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span>APPLICATION</span>
+
+                    <h2 id="modalTitle">
+                        Add Application
+                    </h2>
+
+                </div>
+
+                <button id="closeModal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <form id="applicationForm">
+
+                <input type="hidden" id="editId">
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="company">
+                            Company *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="company"
+                            placeholder="e.g. Google"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="position">
+                            Position *
+                        </label>
+
+                        <input
+                            type="text"
+                            id="position"
+                            placeholder="e.g. Web Developer Intern"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="appliedDate">
+                            Applied Date *
+                        </label>
+
+                        <input
+                            type="date"
+                            id="appliedDate"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="status">
+                            Status *
+                        </label>
+
+                        <select id="status" required>
+
+                            <option value="Applied">
+                                Applied
+                            </option>
+
+                            <option value="Shortlisted">
+                                Shortlisted
+                            </option>
+
+                            <option value="Interview">
+                                Interview
+                            </option>
+
+                            <option value="Selected">
+                                Selected
+                            </option>
+
+                            <option value="Rejected">
+                                Rejected
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="interviewDate">
+                            Interview Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="interviewDate"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="result">
+                            Result
+                        </label>
+
+                        <select id="result">
+
+                            <option value="Pending">
+                                Pending
+                            </option>
+
+                            <option value="Selected">
+                                Selected
+                            </option>
+
+                            <option value="Rejected">
+                                Rejected
+                            </option>
+
+                            <option value="On Hold">
+                                On Hold
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="cancel-btn"
+                        id="cancelBtn"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+                        <i class="fa-solid fa-check"></i>
+                        Save Application
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div class="footer-logo">
+
+            <div class="logo-icon">
+                &lt;/&gt;
+            </div>
+
+            <div>
+                <strong>SKILL FORGE</strong>
+                <small>LEARN • BUILD • GROW</small>
+            </div>
+
+        </div>
+
+        <p>
+            Task 3 • Job & Internship Application Tracker
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
